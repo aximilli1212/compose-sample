@@ -1,0 +1,6 @@
+# Specify a base image
+FROM node:12.13.0-alpine AS alpineWORKDIR /app# Install dependencies
+COPY package.json .
+RUN npm install
+COPY . .# Default command
+CMD ["npm", "run", "dev"]
