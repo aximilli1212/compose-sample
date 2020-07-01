@@ -1,26 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
-
-export default App;
+import './App.css';function App() {
+    const [toDoItems, updateToDoItems] = React.useState([]);  React.useEffect(() => {
+        const getToDoItems = async () => {
+            const response = await fetch(
+                `${process.env.REACT_APP_TO_DO_ITEMS_API}/items`
+            );    const items = await response.json();
+            if (items && Array.isArray(items) && items.length) {
+                // @ts-ignore
+                updateToDoItems(items);
+            }
+        };
+        getToDoItems();
+    }, []);return (
+        <div>
+            {toDoItems && toDoItems.length
+                ? toDoItems.map((item: any, i: number) => {
+                    return (
+                        <div key={i}>
+                            {`${item.item_name}`}
+                            <br />
+                        </div>
+                    );
+                })
+                : 'No items to be done'}
+        </div>
+    );
+}export default App;
